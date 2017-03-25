@@ -1,5 +1,5 @@
 
-# MIGI
+# MIGI (右)
 
 > Your clever transjogja assistant
 
