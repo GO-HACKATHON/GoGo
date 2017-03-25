@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 @RestController
 public class QueryController {
@@ -26,7 +27,7 @@ public class QueryController {
     // HTTP GET request
     private String sendGet(String message) throws Exception {
 
-        String url = "https://api.api.ai/v1/query?query="+message+"&lang=en&sessionId=1732814723892134";
+        String url = "https://api.api.ai/v1/query?query="+ URLEncoder.encode(message,"UTF-8") +"&lang=en&sessionId=1732812321";
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
