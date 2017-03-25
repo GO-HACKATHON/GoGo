@@ -1,6 +1,6 @@
 # GoGo
 
-![Alt text] (http://assets.kompasiana.com/items/album/2015/06/07/143368845110670583666.jpg?v=800&t=o?t=o&v=700 "Transjogja Bus. Source : kompasiana.com")
+![Alt text] (transjogjabus.jpg?raw=true "Transjogja Bus. Source : kompasiana.com")
 3,594 million people live in Yogjakarta and around 4.18 million  tourist come to Jogja every year. They need a fast and reliable transportation. But, the existing transportations yet can not provide that needs, especially in terms of time. As a result, they prefer to use their own private transportation.
 
 Migi is an application that help you solve this problem of transportation in Yogyakarta by improving performance of Transjogja. This smart and clever bot will help you to know the arrival time of Transjogja bus, providing information about the availability of the passenger seat, nearest bus stop locations and alternative routes to destinations. So your time will be saved efficiently.
