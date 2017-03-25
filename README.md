@@ -11,9 +11,6 @@
 
 Introducing Migi, a wonderful application that help you solve this problem of transportation in Yogyakarta by improving performance of Transjogja. This smart and clever bot will help you to know the arrival time of Transjogja bus, providing information about the availability of the passenger seat, nearest bus stop locations and alternative routes to destinations. So your time will be saved efficiently.
 
-## Installation
-1. download lala
-
 ## Get Started with Migi
 ### Installation
 ### Running Migi
@@ -35,5 +32,6 @@ Introducing Migi, a wonderful application that help you solve this problem of tr
 
 ```
 
-##Features
-##Support
+## Features 
+
+## Support
