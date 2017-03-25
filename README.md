@@ -1,5 +1,5 @@
 #MIGI
-![Migi](migi logo.png)
+![Migi](/migi logo.png)
 ##Introduction
 3,594 million peoples live in Yogyakarta and around 4.18 million tourists come to Yogyakarta every year. They need a fast and reliable transportation. There are so many solutions provided but they also create a new big problem *TRAFIC JAM*. Instead of creating a new solution, why don't we upgrade the existing one?
 
