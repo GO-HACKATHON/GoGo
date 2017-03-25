@@ -8,13 +8,52 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 @RestController
 public class QueryController {
 
     @RequestMapping(value = "/query" ,method = RequestMethod.GET, params = "message")
-    public ResponseEntity<?> getUserByUsername(@RequestParam("message") String message) {
-        Message msg = new Message(message);
+    public ResponseEntity<?> getUserByUsername(@RequestParam("message") String message) throws Exception {
+        String apiai = sendGet(message);
+        Message msg = new Message(apiai);
         return new ResponseEntity(msg, HttpStatus.OK);
+    }
+
+    // HTTP GET request
+    private String sendGet(String message) throws Exception {
+
+        String url = "https://api.api.ai/v1/query?query="+message+"&lang=en&sessionId=1732814723892134";
+
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+        con.setRequestProperty("Authorization", "Bearer a7d81f6de8154d748b48d9ae6913a517");
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
+        return response.toString();
     }
 
 }
