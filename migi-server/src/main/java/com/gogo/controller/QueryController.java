@@ -1,5 +1,8 @@
 package com.gogo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogo.model.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,7 +25,8 @@ public class QueryController {
     public ResponseEntity<?> getUserByUsername(@RequestParam("message") String message) throws Exception {
         String apiai = sendGet(message);
         Message msg = new Message(apiai);
-        return new ResponseEntity(msg, HttpStatus.OK);
+        String parameterNeeded = convertJSON(msg.getMessage());
+        return new ResponseEntity(parameterNeeded, HttpStatus.OK);
     }
 
     // HTTP GET request
@@ -57,5 +62,10 @@ public class QueryController {
         return response.toString();
     }
 
+    private String convertJSON(String jsonFormat) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(jsonFormat);
+        return rootNode.get("result").get("metadata").get("intentName").asText();
+    }
 }
 
