@@ -34,8 +34,13 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
+.idea/
 .idea*
+*.iws
+
+# Maven
+log/
+target/
 
 # Keystore files
 *.jks
