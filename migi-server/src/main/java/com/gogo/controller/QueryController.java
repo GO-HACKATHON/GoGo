@@ -1,9 +1,10 @@
 package com.gogo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogo.model.Message;
+import com.gogo.model.Response;
+import com.mongodb.MongoClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,18 +23,69 @@ import java.net.URLEncoder;
 public class QueryController {
 
     @RequestMapping(value = "/query" ,method = RequestMethod.GET, params = "message")
-    public ResponseEntity<?> getUserByUsername(@RequestParam("message") String message) throws Exception {
+    public ResponseEntity<?> relayMessage(@RequestParam("message") String message) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        MongoClient mongoClient = new MongoClient();
+        String responseMessage;
+
         String apiai = sendGet(message);
         Message msg = new Message(apiai);
-        String parameterNeeded = convertJSON(msg.getMessage());
-        return new ResponseEntity(msg, HttpStatus.OK);
+
+        String intent = getIntent(objectMapper, msg.getMessage());
+        String addressTo = getAddress(objectMapper, msg.getMessage(), "addressTo");
+        String addressFrom = getAddress(objectMapper, msg.getMessage(), "addressFrom");
+
+        if (intent.equals("location.get")) {
+            TrajactoryPlanner trajactoryPlanner = new TrajectoryPlanner(mongoClient);
+            Response response = new Response();
+            response = trajactoryPlanner.getLocation(addressFrom, addressTo);
+            //get location method
+        }
+        else {
+            responseMessage = this.convertToJSON("Can you ask another question. I still couldn't understand");
+        }
+
+        return new ResponseEntity(responseMessage, HttpStatus.OK);
     }
 
+    private String buildResponse(Response response) {
+        //String[] responseGetStopBus = new String[10];
+        String[] responseTrajectory = new String[10];
+        //String[] responseArrivalTime = new String[10];
+
+        responseTrajectory[0] = "If you want to go to" + response.getAddressTo() + "from" + response.getAddressFrom() +
+                "you can take this route: " + response.getBusTrajectory() + "Be careful, your beloved waiting for you. If you have one btw :p";
+        responseTrajectory[1] = "The shortest route from" + response.getAddressFrom() + "to" + response.getAddressTo() + "is by" +
+                response.getBusTrajectory();
+        responseTrajectory[2] = "You can reach" + response.getAddressTo() + "from" + response.getAddressFrom() + "by this route:" +
+                response.getBusTrajectory();
+        responseTrajectory[3] = "The best route from" + response.getAddressFrom() + "to" + response.getAddressTo() + "is by" +
+                response.getBusTrajectory();
+        responseTrajectory[4] = "You can take this route: " + response.getBusTrajectory() + "Thanks for not causing traffic jam by using transjogja." +
+                "\nGood job!";
+        responseTrajectory[5] = "You can reach that place by" + response.getBusTrajectory() + "\nDont't forget bring what you need";
+        //responseTrajectory[6] = ""
+
+//        responseGetStopBus[0] = "The nearest stop bus is at" + response.getNearestBusStop() + "Please be careful to get there :D";
+//        responseGetStopBus[1] = "You can go to" + response.getNearestBusStop() + ", that is the nearest to you";
+//        responseGetStopBus[2] = "You can reach" + response.getNearestBusStop() + "by walking. So you will be healthier :)";
+//        responseGetStopBus[3] = "I suggest you to go to " + response.getNearestBusStop() + ", but It's up to you :D";
+//        responseGetStopBus[4] = "You can go to" + response.getNearestBusStop() +". You're awesome, because you use transjogja.";
+//        responseGetStopBus[5] = "Please go to" + response.getNearestBusStop() + ". Thank you for making our world to be a better place to live by riding public transportation";
+//
+//        responseArrivalTime[0] = "Your bus will be arrived in" + response.getArrivalTime();
+//        responseArrivalTime[1] = "Your bus will be arrived in" + response.getArrivalTime() + "You have to hurry or you can wait for the next bus." +
+//                "Will come in" + response.getArrivalTimeAlternative() + "btw :D";
+//        responseArrivalTime[2] = "Will come in" + response.getArrivalTime() + "You can do what you want now, because the bus still far away :)";
+//        responseArrivalTime[3] = "Thank you for being patience. Your bus will come in" + response.getArrivalTime();
+//        responseArrivalTime[4] = "Take your time! You still have long time to wait. The bus will arrived at" + response.getArrivalTime();
 
 
-        // HTTP GET request
-    private String sendGet(String message) throws Exception {
+        return this.convertToJSON();
+    }
 
+    // HTTP GET request
+    private String sendGet( String message) throws Exception {
         String api_ai_token = "bearer a7d81f6de8154d748b48d9ae6913a517";
         String url = "https://api.api.ai/v1/query?query="+ URLEncoder.encode(message,"UTF-8") +"&lang=en&sessionId=1732812321";
 
@@ -65,10 +117,18 @@ public class QueryController {
         return response.toString();
     }
 
-    private String convertJSON(String jsonFormat) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    private String getIntent(ObjectMapper mapper, String jsonFormat) throws IOException {
         JsonNode rootNode = mapper.readTree(jsonFormat);
         return rootNode.get("result").get("metadata").get("intentName").asText();
+    }
+
+    private String getAddress(ObjectMapper mapper, String jsonFormat, String paramater) throws IOException {
+        JsonNode rootNode = mapper.readTree(jsonFormat);
+        return rootNode.get("result").get("parameters").get(paramater).asText();
+    }
+
+    private String convertToJSON(String message) {
+        return "{\"message\": \"" + message +"\"";
     }
 }
 
