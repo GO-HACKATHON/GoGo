@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         editText = (EditText)findViewById(R.id.etMessage);
 
         list = new ArrayList<Chat>();
-        updateAdapter("Hi, I'm Migi. \nI'm your transjogja assistant. \n Would you tell me where are you now? So I can assist you :)");
+        updateAdapter("Hi, I'm Migi. \nI'm your transjogja assistant. \n Would you tell me where are you now? So I can assist you :)", "Migi");
     }
 
     public void sendClicked(View view) throws UnsupportedEncodingException {
@@ -51,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
         sendQuery(Config.URL + "/query?message=" + message + "&addressFrom=" + this.addressFrom);
 
-        updateAdapter(message);
+        updateAdapter(message, "Imad");
     }
 
-    public void updateAdapter(String message) {
-        list.add(new Chat(message));
+    public void updateAdapter(String message, String username) {
+        list.add(new Chat(message, username));
         this.chatAdapter = new ChatAdapter(this.list, MainActivity.this);
 
         listView.setAdapter(this.chatAdapter);
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JsonNode rootNode = objectMapper.readTree(String.valueOf(response));
 
-                            updateAdapter(rootNode.get("message").asText());
+                            updateAdapter(rootNode.get("message").asText(), "Migi");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

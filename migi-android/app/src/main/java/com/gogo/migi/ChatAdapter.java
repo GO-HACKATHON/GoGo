@@ -14,6 +14,7 @@ import java.util.List;
 public class ChatAdapter extends BaseAdapter {
     public class ViewHolder {
         TextView chatBox;
+        TextView chatBoxUsername;
     }
 
     public Context context;
@@ -54,6 +55,7 @@ public class ChatAdapter extends BaseAdapter {
             // configure view holder
             viewHolder = new ViewHolder();
             viewHolder.chatBox = (TextView) rowView.findViewById(R.id.chat_box);
+            viewHolder.chatBoxUsername = (TextView) rowView.findViewById(R.id.user_name);
             rowView.setTag(viewHolder);
 
         } else {
@@ -61,20 +63,8 @@ public class ChatAdapter extends BaseAdapter {
         }
 
         viewHolder.chatBox.setText(chats.get(position).getMessage() + "");
+        viewHolder.chatBoxUsername.setText(chats.get(position).getUsername() + "");
 
-        // Listen for ListView Item Click
-//        rowView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                // Send single item click data to ViewDetailProduct Class
-//                Intent intent = new Intent(context, MainActivity.class);
-//                // Pass all product id
-//                intent.putExtra(Config.PROD_ID,(product.get(position).getProductId()));
-//
-//                context.startActivity(intent);
-//            }
-//        });
 
         return rowView;
     }
