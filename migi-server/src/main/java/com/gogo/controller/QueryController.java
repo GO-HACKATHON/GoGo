@@ -2,8 +2,10 @@ package com.gogo.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gogo.algorithm.TrajectoryPlanner;
 import com.gogo.model.Message;
 import com.gogo.model.Response;
+import com.gogo.model.Bus;
 import com.mongodb.MongoClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +38,13 @@ public class QueryController {
         String addressFrom = getAddress(objectMapper, msg.getMessage(), "addressFrom");
 
         if (intent.equals("location.get")) {
-            TrajactoryPlanner trajactoryPlanner = new TrajectoryPlanner(mongoClient);
+            TrajectoryPlanner trajactoryPlanner = new TrajectoryPlanner(mongoClient);
             Response response = new Response();
             response = trajactoryPlanner.getLocation(addressFrom, addressTo);
             //get location method
         }
         else {
-            responseMessage = this.convertToJSON("Can you ask another question. I still couldn't understand");
+            responseMessage = this.convertToJSON("I beg your pardon. Can you ask another question?");
         }
 
         return new ResponseEntity(responseMessage, HttpStatus.OK);
