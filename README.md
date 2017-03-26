@@ -13,8 +13,11 @@ Introducing Migi, a wonderful application that help you solve this problem of tr
 
 ## Get Started with Migi
 ### Installation
+
 	You can install Migi by building the source code using IDE such as android studio or intelliJ and install it in your android device
+
 ### Running Migi
+
 	You can run the app directly from your android device. For the server you can use this command in migi-server folder
 	
 	```
