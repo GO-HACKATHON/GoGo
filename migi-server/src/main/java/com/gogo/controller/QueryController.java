@@ -1,6 +1,5 @@
 package com.gogo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogo.model.Message;
@@ -25,8 +24,6 @@ public class QueryController {
     public ResponseEntity<?> getUserByUsername(@RequestParam("message") String message) throws Exception {
         String apiai = sendGet(message);
         Message msg = new Message(apiai);
-        String parameterNeeded = convertJSON(msg.getMessage());
-        return new ResponseEntity(parameterNeeded, HttpStatus.OK);
     }
 
     // HTTP GET request
