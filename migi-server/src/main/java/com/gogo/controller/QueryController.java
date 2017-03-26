@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gogo.algorithm.TrajectoryPlanner;
 import com.gogo.model.Message;
 import com.gogo.model.Response;
+import com.gogo.model.Bus;
 import com.mongodb.MongoClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
