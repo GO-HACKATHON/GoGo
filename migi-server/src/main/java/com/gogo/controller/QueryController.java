@@ -26,9 +26,12 @@ public class QueryController {
         Message msg = new Message(apiai);
     }
 
-    // HTTP GET request
+
+
+        // HTTP GET request
     private String sendGet(String message) throws Exception {
 
+        String api_ai_token = "bearer a7d81f6de8154d748b48d9ae6913a517";
         String url = "https://api.api.ai/v1/query?query="+ URLEncoder.encode(message,"UTF-8") +"&lang=en&sessionId=1732812321";
 
         URL obj = new URL(url);
@@ -38,7 +41,7 @@ public class QueryController {
         con.setRequestMethod("GET");
 
         //add request header
-        con.setRequestProperty("Authorization", "Bearer a7d81f6de8154d748b48d9ae6913a517");
+        con.setRequestProperty("Authorization", api_ai_token);
 
         int responseCode = con.getResponseCode();
         System.out.println("\nSending 'GET' request to URL : " + url);
